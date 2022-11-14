@@ -1,6 +1,6 @@
 package edu.pitt.cs;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Scanner;
 
 public class RentACatImpl implements RentACat {
@@ -12,13 +12,23 @@ public class RentACatImpl implements RentACat {
 	 * passed-in cat id. If the cat with the id exists in the list of cats and has
 	 * been rented out, then this method should return true after calling
 	 * .returnCat() on that cat. Otherwise, the method should return false.
-	 * 
+	 *  
 	 * @param id the ID of the cat to rent
 	 * @return true if cat exists and was rented out, false otherwise
 	 */
 
 	public boolean returnCat(int id) {
-		// TODO
+		// First, determine if the cat exists
+		if(!catExists(id))
+			return false;
+		Cat ret = getCat(id);
+
+		// If the cat is currently rented, return it
+		if(ret.getRented()){
+			ret.returnCat();
+			return true;
+		}
+
 		return false;
 	}
 
@@ -33,7 +43,17 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean rentCat(int id) {
-		// TODO
+		// First, determine if the cat exists
+		if(!catExists(id))
+			return false;
+		Cat rent = getCat(id);
+
+		// If the cat is not already rented, rent it
+		if(!rent.getRented()){
+			rent.rentCat();
+			return true;
+		}
+
 		return false;
 	}
 
@@ -48,8 +68,13 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public String listCats() {
-		// TODO
-		return "WRITE CODE FOR THIS";
+		// Create a list of available cats using a for loop
+		String list = "";
+		for(int i=0; i<cats.size(); i++){
+			if(!cats.get(i).getRented())
+				list += cats.get(i).toString() + "\n";
+		}
+		return list;
 	}
 
 	/**
@@ -63,6 +88,11 @@ public class RentACatImpl implements RentACat {
 
 	public boolean catExists(int id) {
 		// TODO
+		for(int i=0; i<cats.size(); i++){
+			if(cats.get(i).getId() == id){
+				return true;
+			}
+		}
 		return false;
 	}
 
